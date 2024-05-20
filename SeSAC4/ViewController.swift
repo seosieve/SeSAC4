@@ -8,9 +8,6 @@
 import UIKit
 
 class ViewController: UIViewController {
-    
-    lazy var labelArr = [labelOne, labelTwo, labelThree]
-    lazy var buttonArr = [buttonOne, buttonTwo, buttonThree]
 
     @IBOutlet var buttonOne: UIButton!
     @IBOutlet var buttonTwo: UIButton!
@@ -20,6 +17,10 @@ class ViewController: UIViewController {
     @IBOutlet var labelTwo: UILabel!
     @IBOutlet var labelThree: UILabel!
     
+    lazy var labelArr = [labelOne, labelTwo, labelThree]
+    lazy var buttonArr = [buttonOne, buttonTwo, buttonThree]
+    var count = [0,0,0]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -27,7 +28,7 @@ class ViewController: UIViewController {
             guard let label = labelArr[i] else { return }
             guard let button = buttonArr[i] else { return }
             labelUI(label: label, color: .cyan)
-            buttonUI(button: button, title: "안녕")
+            buttonUI(button: button, title: "안녕", tag: i)
         }
     }
 
@@ -38,7 +39,7 @@ class ViewController: UIViewController {
         label.textAlignment = .center
     }
     
-    func buttonUI(button: UIButton, title: String) {
+    func buttonUI(button: UIButton, title: String, tag: Int) {
         var config = UIButton.Configuration.plain()
         var titleAttr = AttributedString(title)
         titleAttr.font = .systemFont(ofSize: 20, weight: .bold)
@@ -46,10 +47,23 @@ class ViewController: UIViewController {
         config.background.backgroundColor = .cyan
         config.attributedTitle = titleAttr
         button.configuration = config
+        button.tag = tag
     }
     
     @IBAction func buttonOnePressed(_ sender: UIButton) {
-        labelOne.text = "dwadaw"
+        print(sender.tag)
+        
+        switch sender.tag {
+        case 0:
+            labelOne.text = String(count[0])
+            count[0] += 1
+        case 1:
+            labelTwo.text = String(count[1])
+            count[1] += 1
+        default:
+            labelThree.text = String(count[2])
+            count[2] += 1
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
